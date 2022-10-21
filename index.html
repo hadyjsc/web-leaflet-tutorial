@@ -146,7 +146,23 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="map" id="map" style="height: 500px;">
+                                    <div class="row">
+                                        <div class="col-xl-12 mb-2">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="text" class="form-control" id="lat" placeholder="Latitude" aria-label="Latitude">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control" id="lng" placeholder="Longitude" aria-label="Longitude">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <div class="map" id="map" style="height: 500px;">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -197,18 +213,92 @@
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
 
-    <script>
-    var coordinate = [0.4663414, 101.4321967];
-    var map = L.map('map').setView(coordinate, 13);
+<script>
+var coordinate = [0.4663414, 101.4321967];
+var map = L.map('map').setView(coordinate, 13);
 
-    var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
 
-    var marker = L.marker(coordinate).addTo(map)
-        .bindPopup('<b>Hello Team!</b><br /> Saya sekarang ada di pekanbaru.').openPopup();
-    </script>
+var marker = L.marker(coordinate, {
+        draggable: true,
+        autoPan: true,
+        autoPanPadding: L.point(300, 300),
+        autoPanSpeed: 5
+    }).addTo(map)
+    .bindPopup('<b>Hello Team!</b><br /> Saya sekarang ada di pekanbaru.').openPopup();
+
+let markers = [
+    ["Lokasi A", 0.4416628383148069, 101.45475001020412, "img/bus-stop.png"], 
+    ["Lokasi B", 0.4748099340179762, 101.41342163085938, "img/bus-stop.png"],
+    ["Lokasi C", 0.47551720065056363, 101.3901757997987, "img/restaurant.png"],
+    ["Lokasi D", 0.4870569148014377, 101.3901757997987, "img/restaurant.png"]
+]
+let markerLain;
+let icon;
+for (const item of markers) {
+    icon = L.icon({
+        iconUrl: item[3],
+        iconSize: [38, 38]
+    });
+    markerLain = new L.marker([item[1], item[2]], { icon })
+        .bindPopup('<b>Hello Team!</b><br /> Saya sekarang ada di '+item[0]+'.')
+        .openPopup();
+    map.addLayer(markerLain)
+    removeMarker(markerLain)
+}
+
+function removeMarker(marker) {
+    marker.on('dblclick', (e)=> {
+        e.target.remove()
+    })
+}
+
+map.on('click', (e) => {
+    let coordinate = e.latlng
+    markerLain = new L.marker(coordinate)
+        .addTo(map)
+        .bindPopup('<b>Hello Team!</b><br /> Saat ini saya ada dikoordinat '+coordinate+'.')
+        .openPopup();
+})
+
+marker.on('click',(e) => {
+    console.log(e)
+    showData(e)
+})
+
+marker.on('dblclick', (e) => {
+    console.log("Ini ditekan karena double click", e);
+})
+
+const deleteMarker = (e) => {
+    if (deleteBool) {
+        e.target.removeFrom(map)
+        deleteBooly = false
+    }
+}
+
+marker.on('mouseover', (e) => {
+    console.log("Marker disentuh oleh cursor");
+})
+
+marker.on('mouseout', (e) => {
+    console.log("Cursor keluar dari marker");
+})
+
+marker.on("drag", (e) => {
+    let latlng = e.latlng
+    $("#lat").val(latlng.lat)
+    $("#lng").val(latlng.lng)
+})
+
+function showData(data) {
+    console.log("LatLng", data.latlng)
+    console.log("LayerPoint", data.layerPoint);
+}
+</script>
 </body>
 
 </html>
