@@ -21,6 +21,38 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link href="css/leaflet.css" rel="stylesheet"/>
     <script src="vendor/leaflet/leaflet.js" ></script>
+
+<style>
+    .popup-style .leaflet-popup-tip,
+    .popup-style .leaflet-popup-content-wrapper {
+        background: #5ad0f1;
+        color: #ffffff;
+    }
+    .popup-style .leaflet-popup-content {
+        border: 5px solid #0b89b2;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .popup-style a.leaflet-popup-close-button {
+        position: absolute;
+        top: -15px;
+        right: -10px;
+        text-align: center;
+        width: 32px;
+        padding-top: 3px;
+        height: 32px;
+        color: #ffffff;
+        background-color: #fd6464;
+        text-decoration: none;
+        border-radius: 50%;
+    }
+
+    .popup-style a.leaflet-popup-close-button:hover, a.leaflet-popup-close-button:focus {
+        color: #ffffff;
+        transform: scale(1.2);
+    }
+</style>
     
 </head>
 
@@ -230,25 +262,131 @@ var marker = L.marker(coordinate, {
     }).addTo(map)
     .bindPopup('<b>Hello Team!</b><br /> Saya sekarang ada di pekanbaru.').openPopup();
 
+let contentA = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisis sed odio morbi quis. Consequat mauris nunc congue nisi vitae suscipit tellus mauris. Scelerisque purus semper eget duis at tellus at urna. Sed vulputate mi sit amet mauris commodo quis imperdiet. Sollicitudin nibh sit amet commodo nulla facilisi nullam. Tempor orci eu lobortis elementum nibh tellus molestie. Pretium nibh ipsum consequat nisl vel pretium. Pulvinar mattis nunc sed blandit. Orci eu lobortis elementum nibh tellus. Elit pellentesque habitant morbi tristique senectus et netus et. Morbi non arcu risus quis varius quam quisque. Id nibh tortor id aliquet. Donec et odio pellentesque diam.`
+let contentB = `<p><h1>Tag HTML Sederhana</h1></br>${contentA}</p>`
+let contentC = `
+<style>
+table.Harga{width:100%;background-color:#fff;border-collapse:collapse;border:2px solid #fc0;color:#000}table.Harga td,table.Harga th{border:2px solid #fc0;padding:3px}table.Harga thead{background-color:#fc0}
+</style>
+<table class="Harga">
+  <thead>
+    <tr>
+      <th>Menu</th>
+      <th>Harga (Rupiah)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Semur Jengkol</td>
+      <td>20.000</td>
+    </tr>
+    <tr>
+      <td>Ayam Penyet</td>
+      <td>15.000</td>
+    </tr>
+    <tr>
+      <td>Ikan Asin</td>
+      <td>25.000</td>
+    </tr>
+  </tbody>
+</table>`
+let contentD =`
+<h1>Hi, kita belajar popup....</h1>
+<p><em><strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit.&nbsp;</strong></em></p>
+<ul>
+	<li>Sed do eiusmod tempor incididunt<strong> </strong></li>
+	<li>ut labore et dolore magna aliqua.</li>
+</ul>
+<p><em><strong>Facilisis sed odio morbi quis.</strong></em></p>
+<ol>
+	<li>Consequat mauris nunc congue nisi vitae suscipit tellus mauris.</li>
+	<li>Scelerisque purus semper eget duis at tellus at urna.</li>
+</ol>
+<p>Sed vulputate mi sit amet mauris commodo quis imperdiet. Sollicitudin nibh sit amet commodo nulla facilisi nullam. Tempor orci eu lobortis elementum nibh tellus molestie. Pretium nibh ipsum consequat nisl vel pretium.</p>
+<p><img alt="" src="https://via.placeholder.com/150" style="width: 150px; height: 150px; float: left; padding-right:10px;" />Pulvinar mattis nunc sed blandit. Orci eu lobortis elementum nibh tellus. Elit pellentesque habitant morbi tristique senectus et netus et. Morbi non arcu risus quis varius quam quisque. Id nibh tortor id aliquet. Donec et odio pellentesque diam. Pulvinar mattis nunc sed blandit. Orci eu lobortis elementum nibh tellus. Elit pellentesque habitant morbi tristique senectus et netus et. Morbi non arcu risus quis varius quam quisque. Id nibh tortor id aliquet. Donec et odio pellentesque diam. Pulvinar mattis nunc sed blandit. Orci eu lobortis elementum nibh tellus. Elit pellentesque habitant morbi tristique senectus et netus et. Morbi non arcu risus quis varius quam quisque. Id nibh tortor id aliquet. Donec et odio pellentesque diam.</p>
+<p>
+<style type="text/css">
+    table.GeneratedTable{width:100%;background-color:#fff;border-collapse:collapse;border:2px solid #249be5;color:#000}table.GeneratedTable td,table.GeneratedTable th{border:2px solid #249be5;padding:3px}table.GeneratedTable thead{background-color:#1fb4f4}
+</style>
+<p>&nbsp;</p>
+<p>Morbi non arcu risus quis varius quam quisque. Id nibh tortor id aliquet. Donec et odio pellentesque diam.</p>
+<table class="GeneratedTable">
+	<thead>
+		<tr>
+			<th>Menu</th>
+			<th>Harga (Rupiah)</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Ayam Bumbu</td>
+			<td>10.000</td>
+		</tr>
+		<tr>
+			<td>Ayam Bakar</td>
+			<td>15.000</td>
+		</tr>
+		<tr>
+			<td>Ikan Goreng</td>
+			<td>8.000</td>
+		</tr>
+	</tbody>
+</table>
+`
+
 let markers = [
-    ["Lokasi A", 0.4416628383148069, 101.45475001020412, "img/bus-stop.png"], 
-    ["Lokasi B", 0.4748099340179762, 101.41342163085938, "img/bus-stop.png"],
-    ["Lokasi C", 0.47551720065056363, 101.3901757997987, "img/restaurant.png"],
-    ["Lokasi D", 0.4870569148014377, 101.3901757997987, "img/restaurant.png"]
+    ["Lokasi A", 0.4416628383148069, 101.45475001020412, "img/bus-stop.png", contentA], 
+    ["Lokasi B", 0.4748099340179762, 101.41342163085938, "img/bus-stop.png", contentB],
+    ["Lokasi C", 0.47551720065056363, 101.3901757997987, "img/restaurant.png", contentC],
+    ["Lokasi D", 0.4870569148014377, 101.3901757997987, "img/restaurant.png", contentD]
 ]
 let markerLain;
 let icon;
+let customPopup;
 for (const item of markers) {
     icon = L.icon({
         iconUrl: item[3],
         iconSize: [38, 38]
     });
+    
+    customPopup = L.popup({
+        offset: L.point(0, -10),
+        minWidth: 600,
+        maxHeight: 400,
+    })
+    .setContent(item[4])
+
+    var customOptions = {
+        'className' : 'popup-style'
+    }
+
     markerLain = new L.marker([item[1], item[2]], { icon })
-        .bindPopup('<b>Hello Team!</b><br /> Saya sekarang ada di '+item[0]+'.')
+        .bindPopup(customPopup, customOptions)
         .openPopup();
+
+    
     map.addLayer(markerLain)
     removeMarker(markerLain)
 }
+
+// Custom Popup pada marker
+let coordinatePopup = [0.4773176589044551, 101.45908355712892]
+
+let popup = L.popup({
+        offset: L.point(0, -10),
+        maxWidth: 40,
+        minWidth: 10,
+        maxHeight: 100,
+        closeButton: false,
+    })
+    .setLatLng(coordinatePopup)
+    .setContent('Belajar Popup Sederhana')
+
+let markerPopup = new L.Marker(coordinatePopup, { icon: L.icon({
+        iconUrl: "img/restaurant.png",
+        iconSize: [38, 38]
+    }) 
+}).addTo(map).bindPopup(popup)
 
 function removeMarker(marker) {
     marker.on('dblclick', (e)=> {
@@ -268,6 +406,8 @@ marker.on('click',(e) => {
     console.log(e)
     showData(e)
 })
+
+
 
 marker.on('dblclick', (e) => {
     console.log("Ini ditekan karena double click", e);
